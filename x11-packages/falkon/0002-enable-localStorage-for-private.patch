@@ -1,0 +1,23 @@
+From bfba0a5d5e998a7cc9f0bc4628a033a56e3828ff Mon Sep 17 00:00:00 2001
+From: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Date: Thu, 7 Dec 2023 12:07:19 -0300
+Subject: [PATCH] MainApplication: Enable localStorage for private
+
+Signed-off-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+---
+ src/lib/app/mainapplication.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/lib/app/mainapplication.cpp b/src/lib/app/mainapplication.cpp
+index 403c304dc..4d0cecd97 100644
+--- a/src/lib/app/mainapplication.cpp
++++ b/src/lib/app/mainapplication.cpp
+@@ -1024,7 +1024,7 @@ void MainApplication::loadSettings()
+     settings.endGroup();
+ 
+     if (isPrivate()) {
+-        webSettings->setAttribute(QWebEngineSettings::LocalStorageEnabled, false);
++        profile->setPersistentStoragePath(DataPaths::path(DataPaths::Temp) + QLatin1String("/private-storage"));
+         history()->setSaving(false);
+     }
+ 
