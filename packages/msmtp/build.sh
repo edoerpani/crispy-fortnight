@@ -1,0 +1,9 @@
+TERMUX_PKG_HOMEPAGE=https://marlam.de/msmtp/
+TERMUX_PKG_DESCRIPTION="Lightweight SMTP client"
+TERMUX_PKG_LICENSE="GPL-3.0"
+TERMUX_PKG_MAINTAINER="@termux"
+TERMUX_PKG_VERSION="1.8.25"
+TERMUX_PKG_SRCURL=https://marlam.de/msmtp/releases/msmtp-$TERMUX_PKG_VERSION.tar.xz
+TERMUX_PKG_SHA256=2dfe1dbbb397d26fe0b0b6b2e9cd2efdf9d72dd42d18e70d7f363ada2652d738
+TERMUX_PKG_AUTO_UPDATE=true
+TERMUX_PKG_DEPENDS="libgnutls, libidn2"
