@@ -1,0 +1,10 @@
+TERMUX_PKG_HOMEPAGE=https://www.rarlab.com/
+TERMUX_PKG_DESCRIPTION="Tool for extracting files from .rar archives"
+TERMUX_PKG_LICENSE="non-free"
+TERMUX_PKG_LICENSE_FILE="license.txt"
+TERMUX_PKG_MAINTAINER="@termux"
+TERMUX_PKG_VERSION=6.2.3
+TERMUX_PKG_SRCURL=https://www.rarlab.com/rar/unrarsrc-${TERMUX_PKG_VERSION}.tar.gz
+TERMUX_PKG_SHA256=120936e41f826cd63d77a580aeea64c1b79fd3e2434f58ce8184e783b51e5b01
+TERMUX_PKG_DEPENDS="libandroid-support, libc++"
+TERMUX_PKG_BUILD_IN_SRC=true

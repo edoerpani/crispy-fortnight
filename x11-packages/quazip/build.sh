@@ -1,0 +1,10 @@
+TERMUX_PKG_HOMEPAGE=https://stachenov.github.io/quazip/
+TERMUX_PKG_DESCRIPTION="Qt/C++ wrapper over minizip library"
+TERMUX_PKG_LICENSE="LGPL-2.1"
+TERMUX_PKG_LICENSE_FILE="COPYING"
+TERMUX_PKG_MAINTAINER="Yisus7u7 <dev.yisus@hotmail.com>"
+TERMUX_PKG_VERSION=1.3
+TERMUX_PKG_SRCURL=https://github.com/stachenov/quazip/archive/refs/tags/v${TERMUX_PKG_VERSION}.tar.gz
+TERMUX_PKG_SHA256=c1239559cd6860cab80a0fd81f4204e606f9324f702dab6166b0960676ee1754
+TERMUX_PKG_DEPENDS="libc++, qt5-qtbase, zlib"
+TERMUX_PKG_BUILD_DEPENDS="qt5-qtbase-cross-tools"
