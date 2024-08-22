@@ -1,0 +1,9 @@
+TERMUX_PKG_HOMEPAGE=https://www.kde.org/
+TERMUX_PKG_DESCRIPTION="Advanced configuration system (KDE)"
+TERMUX_PKG_LICENSE="LGPL-2.1"
+TERMUX_PKG_MAINTAINER="Simeon Huang <symeon@librehat.com>"
+TERMUX_PKG_VERSION=5.106.0
+TERMUX_PKG_SRCURL="https://download.kde.org/stable/frameworks/${TERMUX_PKG_VERSION%.*}/kconfig-${TERMUX_PKG_VERSION}.tar.xz"
+TERMUX_PKG_SHA256=05294ed7db971e1c7c7ef9b1429513516a96f4951c768fce2d915c067e75502d
+TERMUX_PKG_DEPENDS="libc++, qt5-qtbase"
+TERMUX_PKG_BUILD_DEPENDS="extra-cmake-modules, qt5-qtbase-cross-tools, qt5-qttools-cross-tools"
