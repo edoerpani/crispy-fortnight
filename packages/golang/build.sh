@@ -4,9 +4,9 @@ TERMUX_PKG_LICENSE="BSD 3-Clause"
 TERMUX_PKG_MAINTAINER="@termux"
 _MAJOR_VERSION=1.22
 # Use the ~ deb versioning construct in the future:
-TERMUX_PKG_VERSION=3:${_MAJOR_VERSION}.5
+TERMUX_PKG_VERSION=3:${_MAJOR_VERSION}.1
 TERMUX_PKG_SRCURL=https://storage.googleapis.com/golang/go${TERMUX_PKG_VERSION#*:}.src.tar.gz
-TERMUX_PKG_SHA256=ac9c723f224969aee624bc34fd34c9e13f2a212d75c71c807de644bb46e112f6
+TERMUX_PKG_SHA256=79c9b91d7f109515a25fc3ecdaad125d67e6bdb54f6d4d98580f46799caea321
 TERMUX_PKG_DEPENDS="clang"
 TERMUX_PKG_ANTI_BUILD_DEPENDS="clang"
 TERMUX_PKG_RECOMMENDS="resolv-conf"
@@ -29,14 +29,14 @@ termux_step_make_install() {
 	# Unset PKG_CONFIG to avoid the path being hardcoded into src/cmd/cgo/zdefaultcc.go,
 	# see https://github.com/termux/termux-packages/issues/3505.
 	env CC_FOR_TARGET=$CC \
-		CXX_FOR_TARGET=$CXX \
-		CC=gcc \
-		GO_LDFLAGS="-extldflags=-pie" \
-		GO_LDSO="$LINKER" \
-		GOROOT_BOOTSTRAP=$GOROOT \
-		GOROOT_FINAL=$TERMUX_GODIR \
-		PKG_CONFIG= \
-		./make.bash
+	    CXX_FOR_TARGET=$CXX \
+	    CC=gcc \
+	    GO_LDFLAGS="-extldflags=-pie" \
+	    GO_LDSO="$LINKER" \
+	    GOROOT_BOOTSTRAP=$GOROOT \
+	    GOROOT_FINAL=$TERMUX_GODIR \
+	    PKG_CONFIG= \
+	    ./make.bash
 
 	cd ..
 	rm -Rf $TERMUX_GODIR

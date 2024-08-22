@@ -4,15 +4,16 @@ TERMUX_PKG_LICENSE="PHP-3.01"
 TERMUX_PKG_LICENSE_FILE=LICENSE
 TERMUX_PKG_MAINTAINER="@termux"
 # Please revbump php-* extensions along with "minor" bump (e.g. 8.1.x to 8.2.0)
-TERMUX_PKG_VERSION="8.3.10"
+TERMUX_PKG_VERSION=8.3.4
+TERMUX_PKG_REVISION=1
 TERMUX_PKG_SRCURL=https://github.com/php/php-src/archive/php-${TERMUX_PKG_VERSION}.tar.gz
-TERMUX_PKG_SHA256=ef428734ff3b32bade6528b29fb0cd2dc29c5c9b1e45bb382b113a9242ab0320
+TERMUX_PKG_SHA256=4e633d4709afa5301d84d3821471bfb136f281bb71f9acca2fe9d29cc0407d2a
 TERMUX_PKG_AUTO_UPDATE=false
 # Build native php for phar to build (see pear-Makefile.frag.patch):
 TERMUX_PKG_HOSTBUILD=true
 # Build the native php without xml support as we only need phar:
 TERMUX_PKG_EXTRA_HOSTBUILD_CONFIGURE_ARGS="--disable-libxml --disable-dom --disable-simplexml --disable-xml --disable-xmlreader --disable-xmlwriter --without-pear --disable-sqlite3 --without-libxml --without-sqlite3 --without-pdo-sqlite"
-TERMUX_PKG_DEPENDS="libandroid-glob, libandroid-support, libbz2, libc++, libcurl, libffi, libgmp, libiconv, libicu, libresolv-wrapper, libsqlite, libxml2, libxslt, libzip, oniguruma, openssl, pcre2, readline, tidy, zlib"
+TERMUX_PKG_DEPENDS="libandroid-glob, libandroid-support, libbz2, libc++, libcurl, libffi, libgd, libgmp, libiconv, libicu, libresolv-wrapper, libsqlite, libxml2, libxslt, libzip, oniguruma, openssl, pcre2, readline, tidy, zlib"
 TERMUX_PKG_CONFLICTS="php-mysql, php-dev"
 TERMUX_PKG_REPLACES="php-mysql, php-dev"
 TERMUX_PKG_RM_AFTER_INSTALL="php/php/fpm"
@@ -21,12 +22,6 @@ TERMUX_PKG_SERVICE_SCRIPT=("php-fpm" "mkdir -p $TERMUX_ANDROID_HOME/.php\nif [ -
 TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 ac_cv_func_res_nsearch=no
 ac_cv_phpdbg_userfaultfd_writefault=no
-php_cv_lib_gd_gdImageCreateFromPng=yes
-php_cv_lib_gd_gdImageCreateFromAvif=yes
-php_cv_lib_gd_gdImageCreateFromWebp=yes
-php_cv_lib_gd_gdImageCreateFromJpeg=yes
-php_cv_lib_gd_gdImageCreateFromBmp=yes
-php_cv_lib_gd_gdImageCreateFromTga=yes
 --enable-bcmath
 --enable-calendar
 --enable-exif
@@ -52,7 +47,7 @@ php_cv_lib_gd_gdImageCreateFromTga=yes
 --with-apxs2=$TERMUX_PKG_TMPDIR/apxs-wrapper.sh
 --with-iconv=$TERMUX_PREFIX
 --enable-fpm
---enable-gd=shared,$TERMUX_PREFIX
+--enable-gd
 --with-external-gd
 --with-external-pcre
 --with-zip
@@ -77,22 +72,18 @@ termux_step_host_build() {
 	pushd $PATCHELF_SRCDIR
 	./bootstrap.sh
 	./configure
-	make -j $TERMUX_PKG_MAKE_PROCESSES
+	make -j $TERMUX_MAKE_PROCESSES
 	popd
 
 	(cd "$TERMUX_PKG_SRCDIR" && ./buildconf --force)
 	"$TERMUX_PKG_SRCDIR/configure" ${TERMUX_PKG_EXTRA_HOSTBUILD_CONFIGURE_ARGS}
-	make -j "$TERMUX_PKG_MAKE_PROCESSES"
+	make -j "$TERMUX_MAKE_PROCESSES"
 }
 
 termux_step_pre_configure() {
 	export PATH=$TERMUX_PKG_HOSTBUILD_DIR/_patchelf/src:$PATH
 
-	# warning: static library libclang_rt.builtins-aarch64-android.a is not portable
-	local _libgcc_file="$($CC -print-libgcc-file-name)"
-	local _libgcc_path="$(dirname $_libgcc_file)"
-	local _libgcc_name="$(basename $_libgcc_file)"
-	LDFLAGS+=" -lresolv_wrapper -landroid-glob -llog -L$_libgcc_path -l:$_libgcc_name -lm"
+	LDFLAGS+=" -lresolv_wrapper -landroid-glob -llog $($CC -print-libgcc-file-name)"
 
 	export PATH=$PATH:$TERMUX_PKG_HOSTBUILD_DIR/sapi/cli/
 	export NATIVE_PHP_EXECUTABLE=$TERMUX_PKG_HOSTBUILD_DIR/sapi/cli/php

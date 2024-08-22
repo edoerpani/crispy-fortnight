@@ -1,6 +1,8 @@
 TERMUX_PKG_HOMEPAGE=https://xorg.freedesktop.org/
 TERMUX_PKG_DESCRIPTION="A library that exposes a event API on top of Linux futexes"
-TERMUX_PKG_LICENSE="HPND"
+# License: HPND
+TERMUX_PKG_LICENSE="custom"
+TERMUX_PKG_LICENSE_FILE="COPYING"
 TERMUX_PKG_MAINTAINER="@termux"
 TERMUX_PKG_VERSION=1.3.2
 TERMUX_PKG_REVISION=1
