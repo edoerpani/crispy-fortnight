@@ -1,0 +1,12 @@
+TERMUX_PKG_HOMEPAGE=https://python-pillow.org/
+TERMUX_PKG_DESCRIPTION="Python Imaging Library"
+TERMUX_PKG_LICENSE="custom"
+TERMUX_PKG_MAINTAINER="@termux"
+TERMUX_PKG_VERSION=10.1.0
+TERMUX_PKG_SRCURL=https://github.com/python-pillow/Pillow/archive/refs/tags/${TERMUX_PKG_VERSION}.tar.gz
+TERMUX_PKG_SHA256=39ca46877a38414abd0c7ab15ee885b72efd884c4a43f5a82697685917b7704c
+TERMUX_PKG_AUTO_UPDATE=true
+TERMUX_PKG_DEPENDS="freetype, libimagequant, libjpeg-turbo, libraqm, libtiff, libwebp, libxcb, littlecms, openjpeg, python, zlib"
+TERMUX_PKG_LICENSE_FILE="LICENSE"
+TERMUX_PKG_PYTHON_COMMON_DEPS="wheel"
+TERMUX_PKG_BUILD_IN_SRC=true

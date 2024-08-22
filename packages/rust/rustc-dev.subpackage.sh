@@ -1,0 +1,2 @@
+TERMUX_SUBPKG_DESCRIPTION="Rust compiler development libs"
+TERMUX_SUBPKG_INCLUDE="${_INCLUDED}"
