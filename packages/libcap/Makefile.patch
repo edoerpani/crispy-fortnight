@@ -1,0 +1,10 @@
+--- ../Makefile.orig	2021-10-31 10:08:05.305642670 +0000
++++ ./Makefile	2021-10-31 10:02:46.336018891 +0000
+@@ -17,7 +17,6 @@
+ 	$(MAKE) -C go $@
+ 	rm -f cap/go.sum
+ endif
+-	$(MAKE) -C tests $@
+ 	$(MAKE) -C progs $@
+ 	$(MAKE) -C doc $@
+ 	$(MAKE) -C kdebug $@

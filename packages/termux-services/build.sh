@@ -1,0 +1,10 @@
+TERMUX_PKG_HOMEPAGE=https://github.com/termux/termux-services/
+TERMUX_PKG_DESCRIPTION="Service daemon for Termux"
+TERMUX_PKG_LICENSE="GPL-3.0"
+TERMUX_PKG_MAINTAINER="Henrik Grimler @Grimler91"
+TERMUX_PKG_VERSION=0.14
+TERMUX_PKG_SRCURL=https://github.com/termux/termux-services/archive/${TERMUX_PKG_VERSION}.tar.gz
+TERMUX_PKG_SHA256=59a28be063d64614b2d142affb092ab3ddd372b41243f4a66a9549fa700ef9ca
+TERMUX_PKG_DEPENDS="coreutils, dpkg, runit"
+TERMUX_PKG_PLATFORM_INDEPENDENT=true
+TERMUX_PKG_BUILD_IN_SRC=true

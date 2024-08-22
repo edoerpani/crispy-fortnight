@@ -1,0 +1,93 @@
+--- ../sc-7.16/Makefile	2002-09-14 03:39:56.000000000 +0000
++++ ./Makefile	2021-11-12 21:53:20.158121555 +0000
+@@ -20,13 +20,13 @@
+ # packaging this with an O/S, for example, you'll probably want to change
+ # this to /usr.  Otherwise, /usr/local is probably more appropriate, unless
+ # you're replacing the vendor-supplied version.
+-prefix=/usr
++prefix=@TERMUX_PREFIX@
+ 
+ # This is where the install step puts it.
+ EXDIR=${prefix}/bin
+ 
+ # This is where the man page goes.
+-MANDIR=${prefix}/man/man1
++MANDIR=${prefix}/share/man/man1
+ MANEXT=1
+ MANMODE=644
+ 
+@@ -36,8 +36,7 @@
+ LIBRARY=-DLIBDIR=\"${LIBDIR}\"
+ 
+ # Set SIMPLE for lex.c if you don't want arrow keys or lex.c blows up
+-#SIMPLE=-DSIMPLE
+-SIMPLE=
++SIMPLE=-DSIMPLE
+ 
+ # Set BROKENCURSES if your curses has the nl/nonl bug
+ # if it does and you don't set BROKENCURSES, the display will
+@@ -331,13 +330,13 @@
+ 
+ #########################################
+ # Use this for Linux
+-CC=gcc
++# CC=gcc
+ # Only use -Wall for testing, since it produces warnings that are of no
+ # real effect on the reliability of the program, but may concern some
+ # people who don't understand them.
+ #CFLAGS=-DSYSV3 -O2 -Wall -pipe
+-CFLAGS=-DSYSV3 -O2 -pipe
+-LIB=-lm -lncurses
++CFLAGS+=-DSYSV3
++LIB=-L$(prefix)/lib -lm -lncurses
+ 
+ # All of the source files
+ SRC=Makefile abbrev.c cmds.c color.c crypt.c eres.sed frame.c format.c gram.y \
+@@ -499,32 +498,33 @@
+ 	 $(MANDIR)/p$(name).$(MANEXT)
+ 
+ $(EXDIR)/$(name): $(name)
+-	cp $(name) $(EXDIR)
+-	strip $(EXDIR)/$(name)
++	cp $(name) $(DESTDIR)$(EXDIR)
++	$(STRIP) $(DESTDIR)$(EXDIR)/$(name)
+ 
+ $(EXDIR)/$(name)qref: $(name)qref
+-	cp $(name)qref $(EXDIR)
+-	strip $(EXDIR)/$(name)qref
++	cp $(name)qref $(DESTDIR)$(EXDIR)
++	$(STRIP) $(DESTDIR)$(EXDIR)/$(name)qref
+ 
+ $(EXDIR)/p$(name): p$(name)
+-	cp p$(name) $(EXDIR)
+-	strip $(EXDIR)/p$(name)
++	cp p$(name) $(DESTDIR)$(EXDIR)
++	$(STRIP) $(DESTDIR)$(EXDIR)/p$(name)
+ 
+ $(LIBDIR)/tutorial: tutorial.sc $(LIBDIR)
+-	-mkdir -p $(LIBDIR)/plugins
+-	cp tutorial.sc $(LIBDIR)/tutorial.$(name)
+-	chmod $(MANMODE) $(LIBDIR)/tutorial.$(name)
++	-mkdir -p $(DESTDIR)$(LIBDIR)/plugins
++	cp tutorial.sc $(DESTDIR)$(LIBDIR)/tutorial.$(name)
++	chmod $(MANMODE) $(DESTDIR)$(LIBDIR)/tutorial.$(name)
+ 
+ $(LIBDIR):
+-	mkdir $(LIBDIR)
++	mkdir $(DESTDIR)$(LIBDIR)
+ 
+ $(MANDIR)/$(name).$(MANEXT): $(name).1
+-	cp $(name).1 $(MANDIR)/$(name).$(MANEXT)
+-	chmod $(MANMODE) $(MANDIR)/$(name).$(MANEXT)
++	-mkdir -p $(DESTDIR)$(MANDIR)
++	cp $(name).1 $(DESTDIR)$(MANDIR)/$(name).$(MANEXT)
++	chmod $(MANMODE) $(DESTDIR)$(MANDIR)/$(name).$(MANEXT)
+ 
+ $(MANDIR)/p$(name).$(MANEXT): p$(name).1
+-	cp p$(name).1 $(MANDIR)/p$(name).$(MANEXT)
+-	chmod $(MANMODE) $(MANDIR)/p$(name).$(MANEXT)
++	cp p$(name).1 $(DESTDIR)$(MANDIR)/p$(name).$(MANEXT)
++	chmod $(MANMODE) $(DESTDIR)$(MANDIR)/p$(name).$(MANEXT)
+ 
+ uninstall:
+ 	rm -f $(EXDIR)/$(name)

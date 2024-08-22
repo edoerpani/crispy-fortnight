@@ -1,0 +1,78 @@
+--- ../work/Makefile	2021-12-17 18:34:02.000000000 +0000
++++ ./Makefile	2023-07-13 09:18:16.189548917 +0000
+@@ -16,28 +16,28 @@
+ # along with this program; if not, write to the Free Software Foundation,
+ # Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA. 
+ 
+-prefix=/usr/local
++prefix=@TERMUX_PREFIX@
+ 
+ bin_dir=$(prefix)/bin
+-lib_dir=$(prefix)/lib/authbind
+-libexec_dir=$(lib_dir)
++lib_dir=$(prefix)/lib
++libexec_dir=$(prefix)/libexec/authbind
+ 
+ share_dir=$(prefix)/share
+ man_dir=$(share_dir)/man
+ man1_dir=$(man_dir)/man1
+ man8_dir=$(man_dir)/man8
+ 
+-etc_dir=/etc/authbind
++etc_dir=@TERMUX_PREFIX@/etc/authbind
+ 
+-INSTALL_FILE	?= install -o root -g root -m 644 
+-INSTALL_PROGRAM ?= install -o root -g root -m 755 -s
+-INSTALL_DIR	?= install -o root -g root -m 755 -d
++INSTALL_FILE	?= install -m 644 
++INSTALL_PROGRAM ?= install -m 755
++INSTALL_DIR	?= install -m 755 -d
+ STRIP		?= strip
+ 
+ OPTIMISE=	-O2
+-LDFLAGS=	-g
++LDFLAGS?=	-g
+ LIBS=		-ldl -lc
+-CFLAGS=		-g $(OPTIMISE) \
++CFLAGS+=	\
+ 		-Wall -Wwrite-strings -Wpointer-arith -Wimplicit \
+ 		-Wnested-externs -Wmissing-prototypes -Wstrict-prototypes
+ CPPFLAGS=	-DMAJOR_VER='"$(MAJOR)"' -DMINOR_VER='"$(MINOR)"' \
+@@ -59,19 +59,17 @@
+ all:			$(TARGETS)
+ 
+ install:		$(TARGETS)
+-		$(INSTALL_DIR) $(lib_dir) $(man1_dir) $(man8_dir)
+-		$(INSTALL_PROGRAM) $(BINTARGETS) $(bin_dir)/.
+-		$(INSTALL_FILE) $(LIBTARGET) $(lib_dir)/.
+-		$(STRIP) --strip-unneeded $(lib_dir)/$(LIBTARGET)
+-		ln -sf $(LIBTARGET) $(lib_dir)/$(LIBCANON)
+-		$(INSTALL_PROGRAM) $(HELPER) $(libexec_dir)/.
+-		chmod u+s $(libexec_dir)/$(HELPER)
+-		$(INSTALL_DIR) $(etc_dir) \
+-			$(etc_dir)/byport $(etc_dir)/byaddr $(etc_dir)/byuid
++		$(INSTALL_DIR) $(DESTDIR)$(lib_dir) $(DESTDIR)$(libexec_dir) $(DESTDIR)$(man1_dir) $(DESTDIR)$(man8_dir)
++		$(INSTALL_PROGRAM) $(BINTARGETS) $(DESTDIR)$(bin_dir)/
++		$(INSTALL_FILE) $(LIBTARGET) $(DESTDIR)$(lib_dir)/
++		ln -sf $(LIBTARGET) $(DESTDIR)$(lib_dir)/$(LIBCANON)
++		$(INSTALL_PROGRAM) $(HELPER) $(DESTDIR)$(libexec_dir)/
++		$(INSTALL_DIR) $(DESTDIR)$(etc_dir) \
++			$(DESTDIR)$(etc_dir)/byport $(DESTDIR)$(etc_dir)/byaddr $(DESTDIR)$(etc_dir)/byuid
+ 
+ install_man:		$(MANPAGES_1) $(MANPAGES_8)
+-		$(INSTALL_FILE) $(MANPAGES_1) $(man1_dir)/.
+-		$(INSTALL_FILE) $(MANPAGES_8) $(man8_dir)/.
++		$(INSTALL_FILE) $(MANPAGES_1) $(DESTDIR)$(man1_dir)/
++		$(INSTALL_FILE) $(MANPAGES_8) $(DESTDIR)$(man8_dir)/
+ 
+ libauthbind.o:		libauthbind.c authbind.h
+ 		$(CC) -D_REENTRANT $(CFLAGS) $(CPPFLAGS) -c -o $@ -fPIC $<
+@@ -82,7 +80,7 @@
+ helper.o authbind.o:	authbind.h
+ 
+ $(LIBTARGET):		libauthbind.o
+-		$(LD) -shared -soname $(LIBCANON) -o $@ $< $(LIBS)
++		$(CC) -shared -Wl,-soname=$(LIBCANON) -o $@ $< $(LIBS)
+ 
+ clean distclean:
+ 		rm -f $(TARGETS) *.o *~ ./#*# *.bak *.new core

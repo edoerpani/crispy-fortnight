@@ -1,0 +1,40 @@
+--- ../dMagnetic_0.37/Makefile	2023-05-16 17:52:30.000000000 +0000
++++ ./Makefile	2023-07-13 10:47:07.360538752 +0000
+@@ -25,10 +25,10 @@
+ 
+ PREFIX?=/usr/local
+ DESTDIR?=/usr/local
+-MYPREFIX=$(DESTDIR)
+-INSTALLBIN=$(MYPREFIX)/bin
+-INSTALLSHARE=$(MYPREFIX)/share/games
+-INSTALLMAN=$(MYPREFIX)/share/man
++MYPREFIX=$(PREFIX)
++INSTALLBIN=$(DESTDIR)$(MYPREFIX)/bin
++INSTALLSHARE=$(DESTDIR)$(MYPREFIX)/share/games
++INSTALLMAN=$(DESTDIR)$(MYPREFIX)/share/man
+ 
+ CC?=gcc
+ AR?=ar
+@@ -99,19 +99,19 @@
+ 	install -m 755 -d $(INSTALLMAN)/man6/
+ 	install -m 755 -d $(INSTALLSHARE)/dMagnetic/
+ 
+-	install -m 755 -s dMagnetic $(INSTALLBIN)/dMagnetic
++	install -m 755 dMagnetic $(INSTALLBIN)/dMagnetic
+ 	install -m 644 dMagneticini.5 $(INSTALLMAN)/man5/dMagneticini.5
+ 	install -m 644 dMagnetic.6 $(INSTALLMAN)/man6/dMagnetic.6
+ 	install -m 644 README.txt $(INSTALLSHARE)/dMagnetic/README.txt
+ 	install -m 644 LICENSE.txt $(INSTALLSHARE)/dMagnetic/LICENSE.txt
+-	cp dMagnetic.ini $(INSTALLSHARE)/dMagnetic/
++	cp dMagnetic.ini $(INSTALLSHARE)/
+ 
+ 
+ dMagnetic:	$(OBJ_LOADER) $(OBJ_DEFAULT)  $(OBJ_ENGINE) $(OBJ_LINEA) $(OBJ_VM68K)
+ 	$(LINK) $(LDFLAGS) -o $@ $(OBJ_LOADER)  $(OBJ_ENGINE) $(OBJ_LINEA) $(OBJ_VM68K) $(OBJ_DEFAULT)
+ 
+ dMagnetic.ini:	dMagnetic
+-	./dMagnetic -helpini >dMagnetic.ini
++	dMagnetic -helpini >dMagnetic.ini
+ 
+ .c.o:
+ 	$(CC) $(CPPFLAGS) $(CFLAGS) $(CFLAGS_EXTRA) $(INCFLAGS) -c -o $@ $<

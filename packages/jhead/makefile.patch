@@ -1,0 +1,26 @@
+--- ../jhead-3.08/makefile	2023-06-06 16:08:43.000000000 +0000
++++ ./makefile	2023-07-14 09:38:54.030296111 +0000
+@@ -1,17 +1,17 @@
+ #--------------------------------
+ # jhead makefile for Unix
+ #--------------------------------
+-PREFIX=$(DESTDIR)/usr/local
+-BINDIR=$(PREFIX)/bin
+-DOCDIR=$(PREFIX)/share/doc/jhead
+-MANDIR=$(PREFIX)/share/man/man1
++PREFIX?=/usr/local
++BINDIR=$(DESTDIR)$(PREFIX)/bin
++DOCDIR=$(DESTDIR)$(PREFIX)/share/doc/jhead
++MANDIR=$(DESTDIR)$(PREFIX)/share/man/man1
+ OBJ=obj
+ SRC=.
+ 
+ DPKG_BUILDFLAGS := $(shell command -v dpkg-buildflags 2> /dev/null)
+ ifdef DPKG_BUILDFLAGS
+-CFLAGS:=$(shell dpkg-buildflags --get CFLAGS)
+-LDFLAGS:=$(shell dpkg-buildflags --get LDFLAGS)
++CFLAGS?=$(shell dpkg-buildflags --get CFLAGS)
++LDFLAGS?=$(shell dpkg-buildflags --get LDFLAGS)
+ endif
+ 
+ # To enable electric fence, set ELECTRIC_FENCE=1
