@@ -3,16 +3,22 @@ TERMUX_PKG_DESCRIPTION="Python bindings for Apache Arrow"
 TERMUX_PKG_LICENSE="Apache-2.0"
 TERMUX_PKG_MAINTAINER="@termux"
 # Align the version with `libarrow-cpp` package.
-TERMUX_PKG_VERSION="17.0.0"
+TERMUX_PKG_VERSION="15.0.2"
 TERMUX_PKG_SRCURL=https://github.com/apache/arrow/archive/refs/tags/apache-arrow-${TERMUX_PKG_VERSION}.tar.gz
-TERMUX_PKG_SHA256=8379554d89f19f2c8db63620721cabade62541f47a4e706dfb0a401f05a713ef
+TERMUX_PKG_SHA256=4735b349845bff1fe95ed11abbfed204eb092cabc37523aa13a80cb830fe5b5e
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_UPDATE_METHOD=repology
 TERMUX_PKG_DEPENDS="libarrow-cpp (>= ${TERMUX_PKG_VERSION}), libc++, python, python-numpy"
-TERMUX_PKG_PYTHON_COMMON_DEPS="build, Cython, numpy, 'setuptools==65.7.0', setuptools-scm, wheel"
+TERMUX_PKG_PYTHON_COMMON_DEPS="Cython, numpy, wheel"
 TERMUX_PKG_PROVIDES="libarrow-python"
+TERMUX_PKG_BUILD_IN_SRC=true
 
 termux_step_pre_configure() {
+	echo "Applying setup.py.diff"
+	sed -e "s|@VERSION@|${TERMUX_PKG_VERSION#*:}|g" \
+		$TERMUX_PKG_BUILDER_DIR/setup.py.diff \
+		| patch --silent -p1
+
 	TERMUX_PKG_SRCDIR+="/python"
 	TERMUX_PKG_BUILDDIR="$TERMUX_PKG_SRCDIR"
 
@@ -32,12 +38,13 @@ termux_step_configure() {
 	termux_setup_ninja
 }
 
-termux_step_make() {
-	PYTHONPATH='' python -m build -w -n -x "$TERMUX_PKG_SRCDIR"
+termux_step_make_install() {
+	pip install --no-deps --no-build-isolation . --prefix $TERMUX_PREFIX
 }
 
-termux_step_make_install() {
-	local _pyver="${TERMUX_PYTHON_VERSION//./}"
-	local _wheel="pyarrow-${TERMUX_PKG_VERSION}-cp${_pyver}-cp${_pyver}-linux_${TERMUX_ARCH}.whl"
-	pip install --no-deps --prefix="$TERMUX_PREFIX" "$TERMUX_PKG_SRCDIR/dist/${_wheel}"
+termux_step_post_make_install() {
+	local f="$TERMUX_PYTHON_HOME/site-packages/pyarrow/_generated_version.py"
+	if [ ! -e "${f}" ]; then
+		echo "version = '${TERMUX_PKG_VERSION#*:}'" > "${f}"
+	fi
 }

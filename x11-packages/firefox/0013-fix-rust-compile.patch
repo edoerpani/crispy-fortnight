@@ -21,7 +21,7 @@
  tabs = { version = "0.1" }
 --- a/toolkit/library/rust/shared/lib.rs
 +++ b/toolkit/library/rust/shared/lib.rs
-@@ -51,20 +51,16 @@
+@@ -50,21 +50,16 @@
  
  extern crate audio_thread_priority;
  
@@ -32,16 +32,17 @@
  extern crate tabs;
  
 -#[cfg(not(target_os = "android"))]
- mod reexport_appservices_uniffi_scaffolding {
+ mod reexport_tabs {
      tabs::uniffi_reexport_scaffolding!();
-     relevancy::uniffi_reexport_scaffolding!();
-     suggest::uniffi_reexport_scaffolding!();
  }
  
 -#[cfg(not(target_os = "android"))]
  extern crate suggest;
  
- #[cfg(feature = "webrtc")]
+-#[cfg(not(target_os = "android"))]
+ mod reexport_suggest {
+     suggest::uniffi_reexport_scaffolding!();
+ }
 @@ -93,7 +88,6 @@
  extern crate l10nregistry_ffi;
  extern crate localization_ffi;

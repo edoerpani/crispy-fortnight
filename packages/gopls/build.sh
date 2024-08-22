@@ -1,10 +1,10 @@
 TERMUX_PKG_HOMEPAGE=https://github.com/golang/tools
 TERMUX_PKG_DESCRIPTION="The official Go language server"
 TERMUX_PKG_LICENSE="BSD 3-Clause"
-TERMUX_PKG_MAINTAINER="@termux"
-TERMUX_PKG_VERSION="0.16.1"
+TERMUX_PKG_MAINTAINER="@SunPodder"
+TERMUX_PKG_VERSION="0.15.2"
 TERMUX_PKG_SRCURL=https://github.com/golang/tools/archive/refs/tags/gopls/v${TERMUX_PKG_VERSION}.tar.gz
-TERMUX_PKG_SHA256=0805bb9d3bfa51334b4d45a3182daea3e77ecbe27f4ddc672841ec72f63ed20a
+TERMUX_PKG_SHA256=cf5b8246b36967eb8fbbed518ea941110cc6bbcc7f42a44bc5a4fe0d7ee61652
 TERMUX_PKG_AUTO_UPDATE=true
 TERMUX_PKG_UPDATE_VERSION_REGEXP="\d+\.\d+\.\d+"
 
@@ -30,3 +30,4 @@ termux_step_make() {
 termux_step_make_install() {
 	install -Dm755 -t $TERMUX_PREFIX/bin $TERMUX_PKG_SRCDIR/gopls/gopls
 }
+

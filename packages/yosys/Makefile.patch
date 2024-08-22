@@ -1,6 +1,6 @@
 --- a/Makefile
 +++ b/Makefile
-@@ -10,7 +10,7 @@
+@@ -11,7 +11,7 @@
  
  # features (the more the better)
  ENABLE_TCL := 1
@@ -9,12 +9,15 @@
  ENABLE_GLOB := 1
  ENABLE_PLUGINS := 1
  ENABLE_READLINE := 1
-@@ -222,7 +222,7 @@
+@@ -216,9 +215,8 @@
+ endif
  
  ifeq ($(CONFIG),clang)
- CXX = clang++
--CXXFLAGS += -std=$(CXXSTD) $(OPT_LEVEL)
+-CXX = clang
+-LD = clang++
+-CXXFLAGS += -std=$(CXXSTD) -Os
++LD = $(CXX)
 +CXXFLAGS += -std=$(CXXSTD)
- ifeq ($(ENABLE_LTO),1)
- LINKFLAGS += -fuse-ld=lld
- endif
+ ABCMKARGS += ARCHFLAGS="-DABC_USE_STDINT_H -Wno-c++11-narrowing $(ABC_ARCHFLAGS)"
+ 
+ ifneq ($(SANITIZER),)

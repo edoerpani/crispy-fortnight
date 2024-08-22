@@ -28,27 +28,18 @@ termux_setup_no_integrated_as() {
 	for env in CC CXX; do
 		local cmd="$(eval echo \${$env})"
 		local w="$bin/$(basename "$cmd")"
-		if [ -e "$w" ]; then continue; fi
-		if [[ "$(${cmd} -dumpversion | sed "s|\..*||")" -ge 14 ]]; then
+		if [ ! -e "$w" ]; then
 			cat > "$w" <<-EOF
-			#!$(command -v sh)
-			PATH="$binutils_cross_bin:\$PATH"
-			exec "$(command -v "$cmd")" \
-				--start-no-unused-arguments \
-				-fno-integrated-as \
-				--end-no-unused-arguments \
-				"\$@"
+				#!$(command -v sh)
+				PATH="$binutils_cross_bin:\$PATH"
+				exec "$(command -v "$cmd")" \
+					--start-no-unused-arguments \
+					-fno-integrated-as \
+					--end-no-unused-arguments \
+					"\$@"
 			EOF
-		else
-			cat > "$w" <<-EOF
-			#!$(command -v sh)
-			PATH="$binutils_cross_bin:\$PATH"
-			exec "$(command -v "$cmd")" \
-				-fno-integrated-as \
-				"\$@"
-			EOF
+			chmod 0700 "$w"
 		fi
-		chmod u+x "$w"
 	done
 	export PATH="$bin:$PATH"
 }

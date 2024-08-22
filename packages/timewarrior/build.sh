@@ -13,3 +13,4 @@ TERMUX_PKG_RM_AFTER_INSTALL="share/man"
 termux_step_pre_configure() {
 	LDFLAGS+=" -landroid-glob"
 }
+
