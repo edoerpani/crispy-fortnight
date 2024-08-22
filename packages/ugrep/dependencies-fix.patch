@@ -1,0 +1,12 @@
+diff -uNr ugrep-5.1.2/m4/ax_check_bzip3lib.m4 ugrep-5.1.2.mod/m4/ax_check_bzip3lib.m4
+--- ugrep-5.1.2/m4/ax_check_bzip3lib.m4 2024-04-03 22:51:25.000000000 +0800
++++ ugrep-5.1.2.mod/m4/ax_check_bzip3lib.m4     2024-04-04 11:04:59.507997401 +0800
+@@ -64,7 +64,7 @@
+ # Handle user hints
+ #
+ [AC_MSG_CHECKING(if bzip3 is wanted)
+-bzip3_places="/usr/local /usr /opt/homebrew /opt/local /sw"
++bzip3_places="@TERMUX_PREFIX@"
+ AC_ARG_WITH([bzip3],
+ [  --with-bzip3=DIR        root directory path of bzip3 library installation
+                           @<:@defaults to /usr/local or /usr if not found in

@@ -1,0 +1,9 @@
+TERMUX_PKG_HOMEPAGE=https://nats-io.github.io/nats.c/
+TERMUX_PKG_DESCRIPTION="A C client for the NATS messaging system"
+TERMUX_PKG_LICENSE="Apache-2.0"
+TERMUX_PKG_MAINTAINER="@termux"
+TERMUX_PKG_VERSION="3.8.0"
+TERMUX_PKG_SRCURL=https://github.com/nats-io/nats.c/archive/refs/tags/v${TERMUX_PKG_VERSION}.tar.gz
+TERMUX_PKG_SHA256=465811380cdc6eab3304e40536d03f99977a69c0e56fcf566000c29dd075e4dd
+TERMUX_PKG_AUTO_UPDATE=true
+TERMUX_PKG_DEPENDS="libprotobuf-c, openssl"
